@@ -1,5 +1,7 @@
 package com.ts.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ts.model.Admin;
@@ -11,43 +13,41 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final AdminService adminService;
 
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
-    }
+	    private final AdminService adminService;
 
-    @GetMapping("/find/{username}")
-    public Admin findAdminByUsername(@PathVariable String username) {
-        return adminService.findAdminByUsername(username);
-    }
+	    public AdminController(AdminService adminService) {
+	        this.adminService = adminService;
+	    }
 
-    @GetMapping("/find-by-role/{role}")
-    public List<Admin> findAdminsByRole(@PathVariable String role) {
-        return adminService.findAdminsByRole(role);
-    }
+	    @PostMapping("/add")
+	    public ResponseEntity<Admin> addAdmin(@RequestBody Admin admin) {
+	        Admin newAdmin = adminService.addAdmin(admin);
+	        return ResponseEntity.status(HttpStatus.CREATED).body(newAdmin);
+	    }
 
-    @GetMapping("/find-by-role-ordered/{role}")
-    public List<Admin> findAdminsByRoleOrderedByUsernameAsc(@PathVariable String role) {
-        return adminService.findAdminsByRoleOrderedByUsernameAsc(role);
-    }
+	    @GetMapping
+	    public ResponseEntity<List<Admin>> getAllAdmins() {
+	        List<Admin> admins = adminService.getAllAdmins();
+	        return ResponseEntity.ok(admins);
+	    }
 
-    @GetMapping("/count-by-role/{role}")
-    public long countAdminsByRole(@PathVariable String role) {
-        return adminService.countAdminsByRole(role);
-    }
+	    @GetMapping("/{id}")
+	    public ResponseEntity<Admin> getAdminById(@PathVariable Long id) {
+	        Admin admin = adminService.getAdminById(id);
+	        return ResponseEntity.ok(admin);
+	    }
 
-    @GetMapping("/find-by-role-and-username-containing")
-    public List<Admin> findAdminsByRoleAndUsernameContaining(
-            @RequestParam String role,
-            @RequestParam String username) {
-        return adminService.findAdminsByRoleAndUsernameContaining(role, username);
-    }
+	    @PutMapping("/{id}")
+	    public ResponseEntity<Admin> updateAdmin(@PathVariable Long id, @RequestBody Admin adminDetails) {
+	        Admin updatedAdmin = adminService.updateAdmin(id, adminDetails);
+	        return ResponseEntity.ok(updatedAdmin);
+	    }
 
-    @GetMapping("/find-by-multiple-roles")
-    public List<Admin> findAdminsByMultipleRoles(@RequestParam List<String> roles) {
-        return adminService.findAdminsByMultipleRoles(roles);
-    }
+	    @DeleteMapping("/{id}")
+	    public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
+	        adminService.deleteAdmin(id);
+	        return ResponseEntity.noContent().build();
+	    }
+	}
 
-    // You can add more controller methods here based on your needs
-}

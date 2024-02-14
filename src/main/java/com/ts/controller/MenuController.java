@@ -1,13 +1,17 @@
 package com.ts.controller;
 
 
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 	import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ts.model.Menu;
+
 import com.ts.service.MenuService;
 
+import java.io.IOException;
 import java.util.List;
 
 	@RestController
@@ -33,11 +37,26 @@ import java.util.List;
 	        }
 	    }
 
-	    @PostMapping("/add")
-	    public ResponseEntity<Void> addMenuItem(@RequestBody Menu menu) {
-	        menuService.addMenuItem(menu);
-	        return ResponseEntity.ok().build();
+	    @PostMapping("/items")
+	    public ResponseEntity<Menu> addMenuItem(@RequestParam("item_name") String itemName,
+	                                                @RequestParam("category") String category,
+	                                                @RequestParam("price") double price,
+	                                                @RequestParam("file") MultipartFile file) {
+	        try {
+	            byte[] fileData = file.getBytes();
+	            Menu menuItem = new Menu();
+	            menuItem.setItem_name(itemName);
+	            menuItem.setCategory(category);
+	            menuItem.setPrice(price);
+	            menuItem.setFileData(fileData);
+	            Menu savedMenuItem = new Menu();
+	            return ResponseEntity.status(HttpStatus.CREATED).body(savedMenuItem);
+	        } catch (IOException e) {
+	            e.printStackTrace(); // Handle the exception appropriately
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	        }
 	    }
+
 
 	    @PutMapping("/update")
 	    public ResponseEntity<Void> updateMenuItem(@RequestBody Menu menu) {

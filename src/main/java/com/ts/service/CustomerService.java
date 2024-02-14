@@ -3,8 +3,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ts.dao.CustomerDao;
-import com.ts.exception.CustomerUpdateException;
-import com.ts.exception.ResourceNotFoundException;
+import com.ts.Exception.CustomerUpdateException;
+import com.ts.Exception.ResourceNotFoundException;
 import com.ts.model.Customer;
 
 import java.util.List;
@@ -31,8 +31,8 @@ import java.util.List;
 	        return customerDao.findByEmail(email);
 	    }
 
-	    public List<Customer> getCustomersByNoOfPeopleGreaterThan(int noOfPeople) {
-	        return customerDao.findByNoOfPeopleGreaterThan(noOfPeople);
+	    public List<Customer> getCustomersByNoOfPeopleGreaterThan(int no_of_People) {
+	        return customerDao.findByNoOfPeopleGreaterThan(no_of_People);
 	        
 	    }
 	   

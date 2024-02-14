@@ -1,8 +1,9 @@
-package com.ts.exception;
+package com.ts.Exception;
 
-public class ResourceNotFoundException  extends RuntimeException {
+	public class ResourceNotFoundException  extends RuntimeException {
 
-    public ResourceNotFoundException(String message) {
-        super(message);
-    }
-}
+	    public ResourceNotFoundException(String message) {
+	        super(message);
+	    }
+	}
+

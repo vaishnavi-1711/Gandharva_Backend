@@ -9,15 +9,6 @@ import java.util.List;
 @Repository
 public interface AdminDao extends JpaRepository<Admin, Long> {
 
-    Admin findByUsername(String username);
-
-    List<Admin> findByRole(String role);
-
-    List<Admin> findByRoleOrderByUsernameAsc(String role);
-
-    long countByRole(String role);
-
-    List<Admin> findByRoleAndUsernameContaining(String role, String username);
-
-    List<Admin> findByRoleIn(List<String> roles);
+	
 }
+

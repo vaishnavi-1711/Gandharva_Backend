@@ -1,9 +1,8 @@
-package com.ts.exception;
-
+package com.ts.Exception;
 
 public class MenuNotFoundException extends RuntimeException {
 
- public MenuNotFoundException(String message) {
-     super(message);
- }
-}
+	 public MenuNotFoundException(String message) {
+	     super(message);
+	 }
+	}

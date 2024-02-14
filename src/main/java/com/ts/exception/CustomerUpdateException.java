@@ -1,10 +1,10 @@
-package com.ts.exception;
+package com.ts.Exception;
 
 
+	public class CustomerUpdateException extends RuntimeException {
 
-public class CustomerUpdateException extends RuntimeException {
+		 public CustomerUpdateException(String message) {
+		     super(message);
+		 }
+		}
 
- public CustomerUpdateException(String message) {
-     super(message);
- }
-}

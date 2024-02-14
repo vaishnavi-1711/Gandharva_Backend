@@ -10,6 +10,5 @@ public class GandharvaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GandharvaApplication.class, args);
-	}
-
+	}	
 }

@@ -12,32 +12,40 @@ import java.util.List;
 @Service
 public class AdminService {
 
-    @Autowired
-    private AdminDao adminDao;
-
-    public Admin findAdminByUsername(String username) {
-        return adminDao.findByUsername(username);
-    }
-
-    public List<Admin> findAdminsByRole(String role) {
-        return adminDao.findByRole(role);
-    }
-
-    public List<Admin> findAdminsByRoleOrderedByUsernameAsc(String role) {
-        return adminDao.findByRoleOrderByUsernameAsc(role);
-    }
-
-    public long countAdminsByRole(String role) {
-        return adminDao.countByRole(role);
-    }
-
-    public List<Admin> findAdminsByRoleAndUsernameContaining(String role, String username) {
-        return adminDao.findByRoleAndUsernameContaining(role, username);
-    }
-
-    public List<Admin> findAdminsByMultipleRoles(List<String> roles) {
-        return adminDao.findByRoleIn(roles);
-    }
+	 @Autowired
+	    private AdminDao adminDao;
 
 
-}
+	    
+
+	     public AdminService( AdminDao adminDao ) {
+	         this. adminDao =  adminDao;
+	     }
+
+	     public Admin addAdmin(Admin admin) {
+	         return  adminDao.save(admin);
+	     }
+
+	     public List<Admin> getAllAdmins() {
+	         return  adminDao.findAll();
+	     }
+
+	     public Admin getAdminById(Long id) {
+	         return  adminDao.findById(id)
+	                 .orElseThrow(() -> new IllegalArgumentException("Admin not found with id " + id));
+	     }
+
+	     public Admin updateAdmin(Long id, Admin adminDetails) {
+	         Admin admin =  adminDao.findById(id)
+	                 .orElseThrow(() -> new IllegalArgumentException("Admin not found with id " + id));
+
+	         admin.setName(adminDetails.getName());
+	         admin.setPassword(adminDetails.getPassword());
+
+	         return  adminDao.save(admin);
+	     }
+
+	     public void deleteAdmin(Long id) {
+	    	 adminDao.deleteById(id);
+	     }
+	 }

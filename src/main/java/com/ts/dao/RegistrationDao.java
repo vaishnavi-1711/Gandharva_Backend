@@ -8,9 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.ts.model.Registration;
 
 
-
 @Repository
-public interface RegistrationRepository extends JpaRepository<Registration, Long> {
+public interface RegistrationDao extends JpaRepository<Registration, Long> {
 
 	Optional<Registration> findByEmail(String email);
 	

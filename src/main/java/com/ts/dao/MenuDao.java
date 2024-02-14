@@ -13,4 +13,6 @@ public interface MenuDao extends JpaRepository<Menu, Long> {
     List<Menu> findByCategory(String category);
 
     List<Menu> findByPriceLessThan(double price);
+
+
 }
