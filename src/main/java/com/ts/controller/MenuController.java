@@ -1,73 +1,51 @@
 package com.ts.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-	import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ts.model.Menu;
 
 import com.ts.service.MenuService;
 
-import java.io.IOException;
 import java.util.List;
 
-	@RestController
-	@RequestMapping("/menu")
-	public class MenuController {
+@RestController
+@RequestMapping("/menu")
 
-	    @Autowired
-	    private MenuService menuService;
+public class MenuController {
 
-	    @GetMapping("/all")
-	    public ResponseEntity<List<Menu>> getAllMenuItems() {
-	        List<Menu> menuItems = menuService.getAllMenuItems();
-	        return ResponseEntity.ok(menuItems);
-	    }
+    @Autowired
+    private MenuService menuService;
 
-	    @GetMapping("/{id}")
-	    public ResponseEntity<Menu> getMenuItemById(@PathVariable Long id) {
-	        Menu menuItem = menuService.getMenuItemById(id);
-	        if (menuItem != null) {
-	            return ResponseEntity.ok(menuItem);
-	        } else {
-	            return ResponseEntity.notFound().build();
-	        }
-	    }
+    @GetMapping
+    public List<Menu> getAllMenus() {
+        return menuService.getAllMenus();
+    }
 
-	    @PostMapping("/items")
-	    public ResponseEntity<Menu> addMenuItem(@RequestParam("item_name") String itemName,
-	                                                @RequestParam("category") String category,
-	                                                @RequestParam("price") double price,
-	                                                @RequestParam("file") MultipartFile file) {
-	        try {
-	            byte[] fileData = file.getBytes();
-	            Menu menuItem = new Menu();
-	            menuItem.setItem_name(itemName);
-	            menuItem.setCategory(category);
-	            menuItem.setPrice(price);
-	            menuItem.setFileData(fileData);
-	            Menu savedMenuItem = new Menu();
-	            return ResponseEntity.status(HttpStatus.CREATED).body(savedMenuItem);
-	        } catch (IOException e) {
-	            e.printStackTrace(); // Handle the exception appropriately
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	        }
-	    }
+    @GetMapping("/{id}")
+    public Menu getMenuById(@PathVariable Long id) {
+        return menuService.getMenuById(id);
+    }
 
+    @PostMapping
+    public Menu createMenu(@RequestBody Menu menu) {
+        return menuService.createMenu(menu);
+    }
 
-	    @PutMapping("/update")
-	    public ResponseEntity<Void> updateMenuItem(@RequestBody Menu menu) {
-	        menuService.updateMenuItem(menu);
-	        return ResponseEntity.ok().build();
-	    }
+    @PutMapping("/{id}")
+    public Menu updateMenu(@PathVariable Long id, @RequestBody Menu menu) {
+        return menuService.updateMenu(id, menu);
+    }
 
-	    @DeleteMapping("/delete/{id}")
-	    public ResponseEntity<Void> deleteMenuItem(@PathVariable Long id) {
-	        menuService.deleteMenuItem(id);
-	        return ResponseEntity.ok().build();
-	    }
-	}
-
+    @DeleteMapping("/{id}")
+    public void deleteMenu(@PathVariable Long id) {
+        menuService.deleteMenu(id);
+    }
+}

@@ -5,14 +5,15 @@ import org.springframework.stereotype.Repository;
 import com.ts.model.Menu;
 
 import java.util.List;
+import java.util.Optional;
 @Repository
 
 
 public interface MenuDao extends JpaRepository<Menu, Long> {
 
-    List<Menu> findByCategory(String category);
+	 Optional<Menu> findById(Long id);
 
-    List<Menu> findByPriceLessThan(double price);
+    List<Menu> findByNameContainingIgnoreCase(String name);
 
 
 }
