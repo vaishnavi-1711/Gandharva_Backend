@@ -1,18 +1,17 @@
 package com.ts.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ts.model.Menu;
 
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
+import java.util.Base64;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import com.ts.dao.MenuDao;
 
 @Service
@@ -21,9 +20,7 @@ public class MenuService {
 	@Autowired
 	private MenuDao menuDao;
 
-	@Value("${upload.path}")
-	private String uploadPath; // Path to the folder where images will be saved
-
+	
 	public List<Menu> getAllMenus() {
 		return menuDao.findAll();
 	}
@@ -32,8 +29,20 @@ public class MenuService {
 		return menuDao.findById(id).orElseThrow(() -> new NoSuchElementException("Menu not found"));
 	}
 
-	public Menu createMenu(Menu menu) {
-		return menuDao.save(menu);
+	public String addMenuItem(String name, String description, double price, MultipartFile image) {
+		Menu menu = new Menu();
+		menu.setName(name);
+		menu.setPrice(price);
+		menu.setDescription(description);
+
+		try {
+			menu.setImage(Base64.getEncoder().encodeToString(image.getBytes()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		menuDao.save(menu);
+		return " product has been added succssfully";
 	}
 
 	public Menu updateMenu(Long id, Menu updatedMenu) {
@@ -47,17 +56,4 @@ public class MenuService {
 		menuDao.delete(existingMenu);
 	}
 
-	public String saveImage(MultipartFile image) throws IOException {
-		Path directory = Paths.get(uploadPath);
-
-		if (!Files.exists(directory)) {
-			Files.createDirectories(directory);
-		}
-
-		String fileName = image.getOriginalFilename();
-		Path filePath = directory.resolve(fileName);
-		Files.copy(image.getInputStream(), filePath);
-
-		return fileName;
-	}
 }
