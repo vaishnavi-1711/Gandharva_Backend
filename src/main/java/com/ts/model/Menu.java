@@ -25,7 +25,7 @@ public class Menu {
 	private String description;
 	private double price;
 	@Lob
-	@Column(name = "image", columnDefinition = "BLOB")
+	@Column(name = "image", columnDefinition = "LONGBLOB")
 	private String image;
 
 }
